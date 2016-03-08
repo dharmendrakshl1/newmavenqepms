@@ -62,14 +62,14 @@ public class LoginController {
 				request.setAttribute("userDTO",userDTO );
 				return new ModelAndView(QEPMSWebConstants.Login.WELCOME_PAGE_PATH,"responseMessageWrapper", responseMessageWrapper);
 			}
+			else if(responseMessageWrapper.getResponseMessage().equals(CommonConstants.LOGIN_CUSTOM_MESSAGE)){
+				responseMessageWrapper.setResponseMessage(CommonConstants.LOGIN_CUSTOM_MESSAGE);
+			}
 			else
 			{
 				responseMessageWrapper.setResponseMessage(CommonConstants.LOGIN_FAILURE_ERROR);
 				
 			}
-			
-				
-			
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
