@@ -41,14 +41,17 @@ public class LoginRestWS {
 			returnedUserDTO = loginService.authenticate(userDTO.getUserName(),userDTO.getPassword());
 			if(returnedUserDTO==null)
 			{
+				LOG.info("Entered in Failure");
 				responseWrapper.setResponseMessage(CommonConstants.LOGIN_FAILURE_STATUS);
 			}
 			else if(returnedUserDTO.getRole()==null)
 			{
+				LOG.info("Entered in Custom Message");
 				responseWrapper.setResponseMessage(CommonConstants.LOGIN_CUSTOM_MESSAGE);
 			}
 			else
 			{
+				LOG.info("Entered in Success");
 				responseWrapper.setResponseMessage(CommonConstants.LOGIN_SUCCESS_STATUS);
 			}
 		    } catch (Exception e) {
