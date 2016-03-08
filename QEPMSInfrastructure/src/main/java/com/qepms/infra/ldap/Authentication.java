@@ -19,6 +19,9 @@ import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 //import org.apache.log4j.Logger;
 
 //import com.quinnox.logging.TrnsformLogger;
@@ -26,7 +29,9 @@ import javax.naming.ldap.LdapContext;
 public class Authentication {
 	
 	//static Logger log =  TrnsformLogger.getLogObject();
-
+	
+	private static final Logger LOG = LoggerFactory.getLogger(Authentication.class);
+	
 	public static Map<String, String> authenticateAD(String userName, String passwordString) throws Exception {
 		
 		/*Map<String, String> userAttrMap = new HashMap<String, String>();
@@ -46,6 +51,9 @@ public class Authentication {
 			String searchBase = ConfigValues.getConfigValue("LDAP_SEARCH_BASE_DN");
 			//System.out.println("URl LDAP: "+ldapURL+"map data:");
 		    //log.debug("URl LDAP: "+ldapURL+"map data:");
+			LOG.info("ldapURL "+ldapURL);
+			LOG.info("searchBase "+searchBase);
+			
 			String returnedAtts[] = { ConfigValues.getConfigValue("LDAP_USER_ID_FIELD"), ConfigValues.getConfigValue("LDAP_USER_NAME_FIELD"), ConfigValues.getConfigValue("LDAP_USER_MAIL_FIELD"),ConfigValues.getConfigValue("LDAP_MANAGER_NAME_FIELD"),ConfigValues.getConfigValue("LDAP_EMP_ID_FIELD"),ConfigValues.getConfigValue("LDAP_JOB_TITLE_FIELD") };
 			String searchFilter = "("+ ConfigValues.getConfigValue("LDAP_USER_ID_FIELD") +"=" + userName + ")";
 	         
@@ -53,12 +61,20 @@ public class Authentication {
 			env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 			env.put(Context.PROVIDER_URL, ldapURL);
 			env.put(Context.SECURITY_AUTHENTICATION, "simple");
-			env.put(Context.SECURITY_PRINCIPAL, ConfigValues.getConfigValue("LDAP_DOMAIN") + "\\" + userName);
+			//env.put(Context.SECURITY_PRINCIPAL, ConfigValues.getConfigValue("LDAP_DOMAIN") + "\\" + userName);
+			env.put(Context.SECURITY_PRINCIPAL, "uid="+userName+","+searchBase);
 			env.put(Context.SECURITY_CREDENTIALS, passwordString);
 		
 			 
 			SearchControls searchControls = new SearchControls();
-			searchControls.setReturningAttributes(returnedAtts);
+			//searchControls.setReturningAttributes(returnedAtts);
+			String[] attrIDs = {"uid",
+					"uidnumber",
+					"cn",
+					"sn",
+					"mail",
+					"mobile"};
+			searchControls.setReturningAttributes(attrIDs);
 			searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
 			
 			ldapContext = new InitialLdapContext(env, null);
@@ -95,6 +111,7 @@ public class Authentication {
 				}
 			} catch (Exception e) { }
 		}
+		LOG.info("userAttrMap = "+userAttrMap);
 		return userAttrMap;
 	}
 	
