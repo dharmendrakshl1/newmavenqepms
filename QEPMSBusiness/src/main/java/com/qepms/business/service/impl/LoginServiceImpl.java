@@ -4,6 +4,8 @@ package com.qepms.business.service.impl;
 
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,8 @@ public class LoginServiceImpl implements LoginService {
 	
 	@Autowired
 	private EmployeeMasterDAO employeeMasterDAO;
+	
+	private static final Logger LOG = LoggerFactory.getLogger(LoginServiceImpl.class);
 
 	@Override
 	public UserDTO authenticate(String uName,String pwd) throws Exception {
@@ -27,6 +31,7 @@ public class LoginServiceImpl implements LoginService {
 		try {
 			
 			 auth = Authentication.authenticateAD(uName, pwd);
+			 LOG.info("auth = "+auth);
 			 if(auth==null)
 			 {
 				 return null;
@@ -39,18 +44,27 @@ public class LoginServiceImpl implements LoginService {
 				 String[]managerDetails=managerDetail.split(",");
 				 String managerNames[]=managerDetails[0].split("=");
 				 String manager=managerNames[1];*/
-				 String userName=auth.get("sAMAccountName");
+				 
+				 /*String userName=auth.get("sAMAccountName");
 				 String name=auth.get("displayName");
 				 String title=auth.get("title");
-				 String empId=auth.get("employeeNumber");
+				 String empId=auth.get("employeeNumber");*/
 				 
+				 String userName=auth.get("uid");
+				 String name=auth.get("cn");
+				 String title=auth.get("sn");
+				 String empId=auth.get("uidNumber");
+				 
+				 LOG.info("Employoee ID "+empId);
 				
 				 EmployeeMaster employeeMaster = employeeMasterDAO.findById(Integer.parseInt(empId));
-				
+				 LOG.info("employeeMaster "+employeeMaster);
 				 
 				 userDTO.setUserName(userName);
 				 userDTO.setEmployeEmail(mail);
-				 userDTO.setEmployeeManager(employeeMaster.getReportingManager());
+				 if(employeeMaster!=null){
+					 userDTO.setEmployeeManager(employeeMaster.getReportingManager()); 
+				 }
 				 userDTO.setEmployeeName(name);
 				 userDTO.setEmpId(Integer.parseInt(empId));
 				 userDTO.setJobTitle(title);
@@ -59,11 +73,7 @@ public class LoginServiceImpl implements LoginService {
 				 {
 					 userDTO.setRole(employeeMaster.getGroup());
 				 }
-				
-					 
-				 
-				 
-				 
+				 LOG.info("userDTO = "+userDTO);
 				 return userDTO;
 			 }
 		   } catch (Exception e) {

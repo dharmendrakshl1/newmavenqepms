@@ -2,7 +2,6 @@ package com.qepms.web.restws;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,7 +21,6 @@ import com.qepms.infra.dto.armg.EmployeeMasterDTO;
 import com.qepms.infra.dto.armg.EmployeeMasterWrapperDTO;
 import com.qepms.infra.dto.armg.ResumeDTO;
 import com.qepms.infra.dto.armg.UploadDTO;
-import com.qepms.infra.exception.QEPMSApplicationException;
 import com.qepms.infra.misc.wrapper.ResponseMessageWrapper;
 
 

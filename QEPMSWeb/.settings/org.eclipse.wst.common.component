@@ -5,13 +5,13 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/QEPMSInfrastructure/QEPMSInfrastructure">
+        <dependent-module archiveName="QEPMSData-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/QEPMSData/QEPMSData">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/QEPMSData/QEPMSData">
+        <dependent-module archiveName="QEPMSInfrastructure-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/QEPMSInfrastructure/QEPMSInfrastructure">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module deploy-path="/WEB-INF/lib" handle="module:/resource/QEPMSBusiness/QEPMSBusiness">
+        <dependent-module archiveName="QEPMSBusiness-0.0.1.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/QEPMSBusiness/QEPMSBusiness">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/QEPMSWeb/build/classes"/>
